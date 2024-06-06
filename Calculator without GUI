@@ -1,0 +1,90 @@
+pastCalculation = []
+def select_op(choice):
+    if(choice in ('+','-','*','/','^','%','#','$')):
+        if(choice == '#'):
+            return -1
+        elif(choice == '$'):
+            return 0
+        elif(choice == '?'):
+            if(len(pastCalculation) == 0):
+                for x in len(pastCalculation):
+                    print(pastCalculation)
+            else:
+                print("No past calculations")
+        else:
+            total = ''
+            lastCalculation = ''
+            while(True):
+                num1 = str(input("enter number 1 : "))
+                print(num1)
+                if num1.endswith('$'):
+                    return 0
+                elif num1.endswith('#'):
+                    return -1
+                try:
+                    number1 = float(num1)
+                    break
+                except:
+                    print("Not a valid number,please enter again")
+                    continue
+
+            while (True):
+                num2 = str(input("enter number 2 : "))
+                print(num2)
+                if num2.endswith('$'):
+                    return 0
+                elif num2.endswith('#'):
+                    return -1
+                try:
+                    number2 = float(num2)
+                    break
+                except:
+                    print("Not a valid number,please enter again")
+                    continue
+
+            if(choice == '+'):
+                total= number1+number2
+            elif(choice == '-'):
+                total= number1 - number2
+            elif (choice == '*'):
+                total= number1 * number2
+            elif (choice == '/'):
+
+                try:
+                    total = number1/number2
+                except:
+                    print('Something Went Wrong >>>>> Division by zero')
+
+            elif (choice == '^'):
+                total= number1 ** number2
+            else:
+                total= number1 % number2
+
+            lastCalculation = print(f'{number1} {choice} {number2} = {total}')
+            pastCalculation.append(lastCalculation)
+
+
+    else:
+        print("Something Went Wrong >>>>> Unrecognized operation")
+
+# -------------------------------------
+
+while True:
+    print("Select operation.")
+    print("1.Add      : + ")
+    print("2.Subtract : - ")
+    print("3.Multiply : * ")
+    print("4.Divide   : / ")
+    print("5.Power    : ^ ")
+    print("6.Remainder: % ")
+    print("7.Terminate: # ")
+    print("8.Reset    : $ ")
+    print("9.History  : ? ")
+
+    # take input from the user
+    choice = input("Enter choice(+,-,*,/,^,%,#,$): ")
+    print(choice)
+    if (select_op(choice) == -1):
+        # program ends here
+        print("Done. Terminating")
+        exit()
