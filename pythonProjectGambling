@@ -1,0 +1,127 @@
+import random
+
+MAX_LINES = 3
+ROWS = 3
+COLS = 3
+
+symbolCount = {
+    "A":5,
+    "B":3,
+    "C":1
+}
+symbolValues = {"A":1,"B":3,"C":5}
+
+def winning(columns, lines, bet , values):
+    winnings = 0
+    winningLines = []
+    for line in range(lines):
+        symbol = columns[0][line]
+        for column in columns:
+            symbolToCheck = column[line]
+            if symbol != symbolToCheck:
+                break
+        else:
+            winnings += values[symbol]*bet
+            winningLines.append(line + 1)
+
+    return winnings, winningLines
+def deposit():
+    while(True):
+        try:
+            money = float(input("Enter deposit amount: "))
+            if money>0:
+                return money
+            else:
+                print("Money should > 0")
+        except:
+            print("Invalid entry")
+
+def betLines():
+    while(True):
+        try:
+            lines = int(input("Lines of bet (1-3): "))
+            if(0 < lines <=MAX_LINES):
+                return lines
+            else:
+                print("invalid entry")
+        except:
+            print("Invalid entry")
+
+def betAmount():
+    while (True):
+        try:
+            bet = float(input("Enter bet amount: "))
+            return bet
+        except:
+            print("Invalid entry")
+
+def spin(rows,cols,symbols):
+    allSymbols = []
+    for symbol, symbolCount in symbols.items():
+        for _ in range(symbolCount):
+            allSymbols.append(symbol)
+
+    columns = []
+    for _ in range(cols):
+        column = []
+        currentSymbols = allSymbols[:]
+        for _ in range(rows):
+            value = random.choice(currentSymbols)
+            currentSymbols.remove(value)
+            column.append(value)
+
+        columns.append(column)
+
+    return columns
+
+def printReel(columns):
+    for row in range(len(columns[0])):
+        for i, column in enumerate(columns):
+            if(i != len(columns) -1):
+                print((column[row]), end="|")
+            else:
+                print(column[row])
+
+def game(balance):
+
+    while True:
+        lines = betLines()
+
+        while(True):
+            bet = betAmount()
+            totalBet = bet*lines
+            if totalBet > balance:
+                print("Not enough money")
+            else:
+                break
+
+        slots = spin(ROWS,COLS,symbolCount)
+        printReel(slots)
+
+        winnings,winningLines = winning(slots,lines,bet,symbolValues)
+
+        print(f"you won ${winnings}.")
+        print(f"you won " ,*winningLines)
+        return winnings - totalBet
+
+
+def main():
+    balance = deposit()
+    while True:
+        print(f"Balance : {balance}")
+        spin = input("Press enter to play (q to quit)")
+        if spin == "q":
+            break
+        balance += game(balance)
+
+    print(f"left with {balance}")
+
+
+
+
+
+main()
+
+
+
+
